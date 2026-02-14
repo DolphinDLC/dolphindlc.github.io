@@ -3,276 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dolphin DLC</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Dolphin • status</title>
     <style>
+        /* Абсолютный минимум. Только необходимое */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            font-weight: 600;
         }
 
         body {
-            background-color: #000;
-            color: #ffffff;
+            background-color: #f5f5f7;  /* светлый фон, как у Apple */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            color: #1d1d1f;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
+            padding: 24px;
+            line-height: 1.4;
         }
 
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .container {
+            max-width: 580px;
             width: 100%;
-            height: 100%;
-            z-index: -2;
+            background-color: transparent; /* прозрачный — никаких карточек */
+            padding: 20px 0;
         }
 
-        .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: twinkle 5s infinite;
+        /* Название — обычный текст, без капса */
+        .title {
+            font-size: 42px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            line-height: 1;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-
-        .glass-container {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 
-                0 8px 32px 0 rgba(0, 0, 0, 0.36),
-                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-            padding: 60px 40px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.05),
-                transparent
-            );
-            transition: left 0.6s ease;
-        }
-
-        .glass-container:hover::before {
-            left: 100%;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .main-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            animation: fadeInUp 1.2s ease-out 0.3s both;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .dolphin-icon {
-            font-size: 3rem;
-            animation: dolphinSwim 3s ease-in-out infinite;
-        }
-
-        @keyframes dolphinSwim {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-5px) rotate(-5deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(5px) rotate(5deg); }
-        }
-
-        .work-in-progress {
-            font-size: 1.5rem;
+        /* Статус — парой слов */
+        .status {
+            font-size: 20px;
+            font-weight: 350;
+            color: #6e6e73;
             margin-bottom: 40px;
-            color: rgba(255, 255, 255, 0.8);
-            animation: fadeInUp 0.8s ease-out 0.6s both;
+            border-left: 2px solid #cbcbcf;
+            padding-left: 16px;
         }
 
-        .buttons-container {
+        .status span {
+            color: #97ff97;  /* синий, но не ярко */
+            font-weight: 400;
+        }
+
+        /* Только ссылки. Без блоков, без рамок */
+        .link-row {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            animation: fadeInUp 0.8s ease-out 0.9s both;
+            align-items: baseline;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e9e9ed;
         }
 
-        .discord-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #5865F2;
-            color: #ffffff;
+        .link-row:first-of-type {
+            border-top: 1px solid #e9e9ed;
+        }
+
+        .link-label {
+            font-size: 17px;
+            font-weight: 400;
+            color: #86868b;
+            min-width: 80px;
+        }
+
+        .link-value {
+            font-size: 19px;
+            font-weight: 430;
+            color: #0066cc;
             text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
+            transition: color 0.1s;
+            word-break: break-word;
         }
 
-        .discord-btn:hover {
-            background: #4752c4;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
+        .link-value:hover {
+            color: #003d99;
+            text-decoration: underline;
         }
 
-        .discord-icon {
-            font-size: 1.2rem;
+        /* Только Telegram. Discord иконка не нужна — есть текст выше.
+           Один символ, без подписи */
+        .telegram-icon {
+            margin: 40px 0 48px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
         }
 
-        .floating-element {
-            position: absolute;
-            width: 100px;
-            height: 100px;
+        .telegram-icon a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background-color: #f0f0f4;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(128, 90, 213, 0.15) 0%, transparent 70%);
-            animation: float 6s ease-in-out infinite;
-            z-index: -1;
+            transition: background-color 0.15s;
         }
 
-        .element-1 {
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
+        .telegram-icon a:hover {
+            background-color: #e3e3e9;
         }
 
-        .element-2 {
-            bottom: 20%;
-            right: 15%;
-            animation-delay: -2s;
-            width: 150px;
-            height: 150px;
+        .telegram-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #1d1d1f;
+            opacity: 0.8;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.05); }
+        /* Копирайт — мелко и незаметно */
+        .footer {
+            font-size: 13px;
+            color: #a1a1a6;
+            border-top: none;
+            padding-top: 12px;
+            font-weight: 350;
+            letter-spacing: -0.01em;
         }
 
-        @media (max-width: 768px) {
-            .glass-container {
-                padding: 40px 20px;
+        /* Адаптивность: просто уменьшаем отступы */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 38px;
             }
-            
-            .main-title {
-                font-size: 2.5rem;
+            .link-row {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                padding: 16px 0;
             }
-            
-            .buttons-container {
-                flex-direction: column;
-                align-items: center;
+            .link-label {
+                font-size: 15px;
+            }
+            .link-value {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    
-    <div class="floating-element element-1"></div>
-    <div class="floating-element element-2"></div>
+    <div class="container">
+        <!-- Dolphin — обычное слово, первая буква заглавная -->
+        <div class="title">Dolphin</div>
+        <div class="status">Status: <span>Undetect</span></div>
 
-    <div class="glass-container">
-        <h1 class="main-title">
-            <span class="dolphin-icon">🐬</span>
-            Dolphin DLC
-            <span class="dolphin-icon">🐬</span>
-        </h1>
-        
-        <div class="work-in-progress">
-            Work in progress on the script...
+        <!-- Discord — чистая ссылка -->
+        <div class="link-row">
+            <span class="link-label">Discord</span>
+            <a href="https://discord.gg/dlph" target="_blank" rel="noopener noreferrer" class="link-value">discord.gg/dlph</a>
         </div>
-        
-        <div class="buttons-container">
-            <button class="discord-btn" id="discordBtn">
-                <i class="fa fa-discord"></i>
-                My Discord
-            </button>
+
+        <!-- Get Key — тоже просто ссылка -->
+        <div class="link-row">
+            <span class="link-label">Get Key</span>
+            <a href="https://t.me/dlph_keybot" target="_blank" rel="noopener noreferrer" class="link-value">t.me/dlph_keybot</a>
+        </div>
+
+        <!-- Минимализм: только Telegram в виде иконки (без текста, без Discord-иконки — Discord уже есть как текст) -->
+        <div class="telegram-icon">
+            <a href="https://t.me/dolphindlc" target="_blank" rel="noopener noreferrer" aria-label="Telegram bot">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Копирайт — очень легко, без границ -->
+        <div class="footer">
+            © 2026 Dolphin. All rights reserved.
         </div>
     </div>
-
-    <script>
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 200;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                const size = Math.random() * 3;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            createStars();
-            
-            const discordBtn = document.getElementById('discordBtn');
-            
-            discordBtn.addEventListener('click', function() {
-                const textArea = document.createElement('textarea');
-                textArea.value = 'DeepGit';
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const originalText = discordBtn.textContent;
-                discordBtn.textContent = 'Copied!';
-                setTimeout(() => {
-                    discordBtn.textContent = originalText;
-                }, 2000);
-            });
-        });
-    </script>
 </body>
 </html>
